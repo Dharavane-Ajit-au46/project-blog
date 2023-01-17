@@ -39,8 +39,8 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 //SHOW ROUTE
-//=======================SHOW COMMENT REFERENCE BY POPULATE.EXEC =============
-//=======================================================================
+
+
 router.get("/:id", function(req, res) {
     Blog.findById(req.params.id).populate("comments").exec(function(err, foundBlog){
         if(err){
@@ -65,7 +65,7 @@ router.get("/:id/edit", middleware.checkOwnershipPost, function(req, res) {
 //PUT ROUTE
 router.put("/:id", middleware.checkOwnershipPost, function(req, res){
     req.body.blog.body = req.sanitize(req.body.blog.body);
-    //Blog.findByIdAndUpdate(id, new data, callback)
+
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
         if(err){
             res.redirect("/blogs");
@@ -89,31 +89,6 @@ router.delete("/:id", middleware.checkOwnershipPost, function(req, res){
     });
 });
 
-// //add middleware isLoggedIn
-// function isLoggedIn(req, res, next){
-//     if(req.isAuthenticated()){
-//         return next();
-//     }
-//     res.redirect("/login");
-// }
 
-// //add another middleware for checking authorization
-// function checkOwnershipPost(req, res, next){
-//     if(req.isAuthenticated()){
-//         if(Blog.findById(req.params.id, function(err, foundBlog) {
-//             if(err){
-//                 res.redirect("/blogs");
-//             } else{
-//                 if(req.user._id.equals(foundBlog.author.id)){
-//                     next();
-//                 } else{
-//                     res.redirect("back");
-//                 }
-//             }
-//         }));
-//     } else {
-//         res.redirect("back");
-//     }
-// }
 
 module.exports = router;
