@@ -4,7 +4,7 @@ var Blog = require("../models/blog");
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
-//---------------COMMENT PART ---------------------------
+
 //CREATE ROUTE
 router.post("/", middleware.isLoggedIn, function(req, res){
     //find the post by ID
@@ -33,10 +33,9 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     })
 });
 
-//-----------------
+
 //EDIT ROUTE
-//-----------------
-//edit form route: /blogs/:id/comments/:comment_id/edit
+
 router.get("/:comment_id/edit", middleware.checkOwnershipComment, function(req, res){
     Comment.findById(req.params.comment_id, function(err, foundComment){
         if(err){
@@ -67,31 +66,6 @@ router.delete("/:comment_id", middleware.checkOwnershipComment, function(req, re
     }) 
 });
 
-//add middleware isLoggedIn
-// function isLoggedIn(req, res, next){
-//     if(req.isAuthenticated()){
-//         return next();
-//     }
-//     res.redirect("/login");
-// }
 
-// //add middleware checkOwnership
-// function checkOwnershipComment(req, res, next){
-//     if(req.isAuthenticated()){
-//         Comment.findById(req.params.comment_id, function(err, foundComment) {
-//             if(err){
-//                 res.redirect("back");
-//             } else{
-//                 if(req.user._id.equals(foundComment.author.id)){
-//                     return next();
-//                 } else{
-//                     res.redirect("back");
-//                 }
-//             }
-//         })
-//     } else{
-//         res.redirect("back");
-//     }
-// }
 
 module.exports = router;
